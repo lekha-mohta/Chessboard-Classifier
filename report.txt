@@ -1,0 +1,67 @@
+# Chessboard Diagram Assignment Report
+
+[Replace the square-bracketed text with your own text. *Leave everything else unchanged.* 
+Note, the reports are parsed to check word limits, etc. Changing the format may cause 
+the parsing to fail.]
+
+## Feature Extraction (Max 200 Words)
+
+Each board image is originally 400 by 400 pixels and has 64 squares, and each square is 50 by 
+50 pixels. Feature extraction requires us to perform dimensionality reduction on a set of feature 
+vectors to reduce the dimensionality of the feature vectors from their original size to 10. 
+
+I used PCA (Principal Component Analysis) for the dimensionality reduction since it gave me a 
+really high accuracy rate. My model checks whether the mean and selected eigenvectors are previously 
+stored in the model. If yes, it uses them to implement the dimensionality reduction 
+[(data - mean_value) * eigenvectors]. If the function is applied to the training data for the first 
+time, it calculates the mean value based on the input data and then calculates the covariance matrix 
+based on that. From the covariance matrix, the eigenvalues and eigenvectors are computed and the first 
+10 eigenvectors are selected. After this, the dimensionality reduction is performed 
+[(data-mean_value) * selected_eigenvectors]. These values are the stored into the model for later use. 
+
+
+## Square Classifier (Max 200 Words)
+
+I thought about two possible approaches for the classifier, Gaussian distribution and k-nearest neighbor. 
+Since k-nn is easier to understand and implement, I did this first and got a high accuracy, and hence 
+decided to stick with this classifier approach. 
+
+The prediction process consisted of calculating the euclidean distance between the current test vector 
+and the training feature vector. Subsequently, all the distances were sorted and indcies of nearest 
+neighbors was determined. Next, I extracted the labels corresponding to those indices from the training 
+labels, and computed the total count of each label. Then, the majority label was assigned as the predicted 
+label for the current feature vector. All of the predicted labels are stored in a list, and then the character 
+representing the label is returned for each feature vector. 
+
+After programming k-nn, I tested various different values for k, and realized that for k=6, the accuracy was 
+the highest. Therefore the final model implemented k-nn with k=6 for the classifer. 
+
+
+## Full-board Classification (Max 200 Words)
+
+For the Full-board classifer, I tried applying certain constraints such as the maximum number of pieces on 
+the baord at any time can be 32. Another costraint, was that there can be a maximum number of each piece (1-king,
+1-queen, 2-rook, 2-knight, 2-bishop and 8-pawns) black and white seperate. Black pieces are represented by 
+lowercase letters and white by uppercase letter. I have commented out the code, since I did not have enough time 
+to completely incorporate into the system, and it was producing some errors and not displaying accuracy scores produced
+by applying pca and knn. 
+
+
+## Performance
+
+My percentage correctness scores (to 1 decimal place) for the development data are as follows.
+
+High quality data:
+
+- Percentage Squares Correct: 98.4%
+- Percentage Boards Correct: 98.4%
+
+Noisy data:
+
+- Percentage Squares Correct: 94.2%
+- Percentage Boards Correct: 94.2%
+
+## Other information (Optional, Max 100 words)
+
+[Optional: highlight any significant aspects of your system that are NOT covered in the
+sections above]
